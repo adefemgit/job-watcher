@@ -1,4 +1,5 @@
 from typing import Dict, List
+from job_model import JobPost
 
 
 def extract_skills(text: str)-> list[str]:
@@ -16,19 +17,15 @@ def extract_skills(text: str)-> list[str]:
     return skills_found
 
 
-def job_skill_counter(jobs: List[str])-> Dict[str, int]:
-    skill_counts = {}
+def job_skill_counter(jobs: List[JobPost])-> Dict[str, int]:
+    skill_counts: Dict[str, int] = {}
 
     for job in jobs:
-        found_skills = extract_skills(job)
+       for skill in extract_skills(job.description):
+           skill_counts[skill] = skill_counts.get(skill, 0) + 1
 
-        for skill in found_skills:
-            if skill not in skill_counts:
-                skill_counts[skill] = 1
-            else:
-                skill_counts[skill] += 1
+
     return skill_counts
-
 
 
 
