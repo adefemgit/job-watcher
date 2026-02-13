@@ -1,6 +1,9 @@
+from pathlib import Path
 from typing import Dict
 
 from  jobwatcher.job_model import JobPost
+from jobwatcher.jsonloader import load_jobs_from_file
+
 from jobwatcher.ext_skills_needed import job_skill_counter
 
 
@@ -16,24 +19,10 @@ def print_report(counts: Dict[str, int]) -> None:
 
 
 def main() -> None:
+    base_dir = Path(__file__).resolve().parent.parent  # project root
+    json_path = base_dir / "jobs.json"
 
-    jobs = [
-        JobPost(
-            title="Junior backend developer",
-            company="google",
-            location="Remote",
-            description="Python and SQL required. Django is a plus.",
-            url="www.indeed.com/jobs?q=python+django&start=0",
-        ),
-        JobPost(
-            title="cloud engineer",
-            company="oracle",
-            location="Remote",
-            description="aws and python  experience required.",
-            url="linkedin.com",
-        ),
-    ]
-
+    jobs = load_jobs_from_file(json_path)
     counts = job_skill_counter(jobs)
     print_report(counts)
 
